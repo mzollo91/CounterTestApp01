@@ -264,3 +264,7 @@ __pycache__/
 *.pyc
 
 # Custom added below this line
+
+# VS Code files
+.vscode
+.vscode/
