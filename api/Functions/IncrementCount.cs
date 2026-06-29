@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Cosmos;
+using CounterTestApp001.Api.Models;
 
 namespace CounterTestApp001.Api.Functions;
 
@@ -11,12 +12,6 @@ public class IncrementCount
     // The lines in the below block are the direct injection for outside classes and objects.
     private readonly ILogger<IncrementCount> _logger;
     private readonly Container _container;
-
-    public class CounterDocument // This class mirrors the structure of the document shape. This is done toto be used as to give properties to the 'response.Resource' object in the IncrementCount function.
-    {
-        public string id {get; set; } = string.Empty;
-        public int count {get; set; }
-    }
 
     public IncrementCount(ILogger<IncrementCount> logger, CosmosClient cosmosClient)
     {
@@ -33,18 +28,20 @@ public class IncrementCount
         {
             PatchOperation.Increment("/count", 1)
         };
-
-           
-        ItemResponse<CounterDocument> response = await _container.PatchItemAsync<CounterDocument>(
-            id: "visitor-counter",
-            partitionKey: new PartitionKey("visitor-counter"),
-            patchOperations: patchOperations
-        );
-
-        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        // Error handling below. As a note, error handling is proportional to caller agency.
+        try
         {
+            ItemResponse<CounterDocument> response = await _container.PatchItemAsync<CounterDocument>(
+                id: "visitor-counter",
+                partitionKey: new PartitionKey("visitor-counter"),
+                patchOperations: patchOperations
+            );
             return new OkObjectResult(response.Resource.count);
+        }   
+        catch (CosmosException ex) // A generic error handler can be used for the exception. The initial thought of catching 404 errors is not needed, the user does not specify the unique ID, it is hardcoded.
+        {
+            _logger.LogError(ex, "CosmosDB operation failed in IncrementCount with status {StatusCode}", ex.StatusCode);
+            return new StatusCodeResult(500);
         }
-        return new OkObjectResult(response.Resource.count); // Placeholder line
     }
 }
