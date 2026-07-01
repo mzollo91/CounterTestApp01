@@ -19,7 +19,10 @@ string endpointUrl = builder.Configuration["CosmosDbEndpoint"]
 string apiKey = builder.Configuration["CosmosDbKey"]
     ?? throw new InvalidOperationException("CosmosDbKey is not configured");
 
-builder.Services.AddSingleton<CosmosClient>(serviceProvider => new CosmosClient(endpointUrl, apiKey)); 
+builder.Services.AddSingleton<CosmosClient>(serviceProvider => new CosmosClient(endpointUrl, apiKey, new CosmosClientOptions
+{
+    ConnectionMode = ConnectionMode.Gateway, // Gateway mode is more suitable for serverless functions, as it reduces the number of connections and is more firewall-friendly.
+})); 
 // Using the serviceProvider and lambda setup (instead of just new CosmosClient()) allows construction of the container to occur when it's actually needed, rather than at the time of registration.
 
 builder.Build().Run(); // builds the host and starts it, blocking until shutdown.

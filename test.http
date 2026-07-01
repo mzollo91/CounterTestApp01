@@ -1,0 +1,5 @@
+### Increment the counter
+POST http://localhost:7071/api/IncrementCount
+
+### Get the current count
+GET http://localhost:7071/api/GetCount

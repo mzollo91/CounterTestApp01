@@ -16,7 +16,7 @@ public class IncrementCount
     public IncrementCount(ILogger<IncrementCount> logger, CosmosClient cosmosClient)
     {
         _logger = logger;
-        _container = cosmosClient.GetContainer("CounterDb", "Counters");
+        _container = cosmosClient.GetContainer("CounterDB", "Counters");
     }
 
     [Function("IncrementCount")]

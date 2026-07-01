@@ -15,7 +15,7 @@ public class GetCount
     public GetCount(ILogger<GetCount> logger, CosmosClient cosmosClient)
     {
         _logger = logger;
-         _container = cosmosClient.GetContainer("CounterDb", "Counters");
+         _container = cosmosClient.GetContainer("CounterDB", "Counters");
     }
 
     [Function("GetCount")]
