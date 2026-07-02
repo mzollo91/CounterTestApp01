@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Visitor Counter</title>
+    </head>
+    <body>
+        <h1>Visitor Counter</h1>
+        <p>Current Count: <span id="countDisplay">--</span></p>
+        <button id="incrementButton">Visit +1</button>
+
+        <script>
+            const countDisplay = document.getElementById('countDisplay');
+            const incrementButton = document.getElementById('incrementButton');
+
+            // async function loadCount() {
+            //     resposne = await fetch('/api/GetCount')
+            //     countDisplay = await resposne.json();
+            //     return countDisplay.textContent
+            // }
+
+            // async function incrementCount() {
+            //     response =  await fetch('/api/IncrementCount', {method: 'POST'});
+            //     data = await response.json();
+            //     Display.textContent = data.count;
+            // }
+            
+            // incrementButton.addEventListener('click', incrementCount);
+            // loadCount(); // run on page load
+
+        </script>
+    </body>
+</html>

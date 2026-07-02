@@ -1,5 +1,11 @@
-### Increment the counter
+### Increment the local counter
 POST http://localhost:7071/api/IncrementCount
 
-### Get the current count
+### Get the local current count
 GET http://localhost:7071/api/GetCount
+
+### Increment the counter
+POST https://mango-ground-0e0bef610.7.azurestaticapps.net/api/IncrementCount
+
+### Get the current count
+GET https://mango-ground-0e0bef610.7.azurestaticapps.net/api/GetCount
